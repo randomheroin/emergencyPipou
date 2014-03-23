@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import tweepy
 
 
@@ -21,7 +23,10 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 user = api.get_user('twitter')
 
-print user.screen_name
-print user.followers_count
-for friend in user.friends():
-   print friend.screen_name
+#print user.screen_name
+#print user.followers_count
+#for friend in user.friends():
+#   print friend.screen_name
+
+for follower in tweepy.Cursor(api.followers).items():
+	follower.follow()
