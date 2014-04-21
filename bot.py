@@ -9,6 +9,7 @@ consumer_key = f.readline()
 consumer_secret = f.readline()
 access_token = f.readline()
 access_token_secret = f.readline()
+f.close()
    
 consumer_key = consumer_key[:len(consumer_key) - 1]
 consumer_secret = consumer_secret[:len(consumer_secret) - 1]
@@ -23,10 +24,12 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 user = api.get_user('twitter')
 
-#print user.screen_name
-#print user.followers_count
-#for friend in user.friends():
-#   print friend.screen_name
+#Liste des followers
+followers = tweepy.Cursor(api.followers).items()
 
-for follower in tweepy.Cursor(api.followers).items():
+#Follow back
+for follower in followers:
+	print follower.name
 	follower.follow()
+	
+
