@@ -1,6 +1,3 @@
-CAN'T PASS IT TO READ/WRITE WITH FRENCH PHONE NUMBER
-FUCK YOU TWITTER
-
 twitKissHugger
 ==============
 
