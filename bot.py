@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#import tweepy
+import tweepy
 from random import randrange
+from time import localtime
+from time import sleep
+from math import ceil
 
 def file_to_dict(file_name):
 	"""opens a file and put tab separated values in a dict"""
@@ -23,36 +26,68 @@ def file_to_probability_dict(file_name):
 		i = i[:len(i) - 1]		#Removing the \n char
 		j = i.split('\t')
 		num = int(j[0])
-		word = str(j[1])
+		word = unicode(str(j[1]), 'utf-8')
 		for j in range(int(num)):
 			d_words[n] = word
 			n += 1
 			
 	return d_words
 	
-
-def randomized_words(d_words):
+def randomized_word(d_words):
 	"""Selects a random word from a probability dict"""
 	p = randrange(len(d_words))
 	return d_words[p]
 
-print file_to_probability_dict("words.conf")
+def twitter_authentification(keys_file):
+	"""return a tweepy.api object connected to your account"""
+	d_keys = file_to_dict(keys_file)
+	auth = tweepy.OAuthHandler(d_keys["consumer_key"], 
+		d_keys["consumer_secret"])
+	auth.set_access_token(d_keys["access_token"], 
+		d_keys["access_secret"])
+	api = tweepy.API(auth)
+	return api
 
-#Lecture des clés d'accès de l'application
-d_keys = file_to_dict("keys.conf")
+def rand_from_list(list_of_things):
+	"""Returns one random item from a set"""
+	return list_of_things[randrange(len(list_of_things))]
 
-#Authentification
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
 
-#Stuff going on
-api = tweepy.API(auth)
-user = api.get_user('twitter')
+api = twitter_authentification("keys.conf")
 
-#Liste des followers
-followers = tweepy.Cursor(api.followers).items()
-nb_followers = len(followers)
+seconds_by_day = 86400
+tweets_content = file_to_probability_dict("words.conf")
+monday = 0
 
+while True:		#Fantastic infinite loop
+	if localtime()[6] == monday:	#Actualize followers list (on monday)
+		followers = set(tweepy.Cursor(api.followers).items())
+		nb_followers = len(followers)
+		messaged_followers = set()
+		followers_by_day = ceil(nb_followers / 7.0)
+		
+	today = localtime()[6]
+	
+	while localtime()[6] == today:
+		time_gap = seconds_by_day / followers_by_day		
+		to_be_messaged = list(followers - messaged_followers)
+		
+		#Pick a user to message
+		selected_user = rand_from_list(to_be_messaged)
+		messaged_followers.add(selected_user)
+
+		#Putting together the "message"
+		handle = "@" + selected_user.name
+		word = randomized_word(tweets_content)
+		message = handle + " " + word
+		
+		api.update_status(message)
+		
+		sleep(time_gap)
+		
+		
+		
+		
 
 
 	
