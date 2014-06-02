@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import tweepy
+import os
 from random import randrange
 from time import localtime
 from time import sleep
