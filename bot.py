@@ -65,7 +65,6 @@ messaged_followers = set()
 followers_by_day = ceil(nb_followers / 7.0)
 
 
-
 while True:		#Fantastic infinite loop
 	if localtime()[6] == monday:	#Actualize followers list (on monday)
 		followers = set(tweepy.Cursor(api.followers).items())
@@ -84,7 +83,7 @@ while True:		#Fantastic infinite loop
 		messaged_followers.add(selected_user)
 
 		#Putting together the "message"
-		handle = "@" + selected_user.name
+		handle = "@" + selected_user.screen_name
 		word = randomized_word(tweets_content)
 		message = handle + " " + word
 		
