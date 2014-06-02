@@ -55,7 +55,7 @@ def rand_from_list(list_of_things):
 	return list_of_things[randrange(len(list_of_things))]
 
 
-cur_dir = os.getcwd()
+cur_dir = os.path.dirname(os.path.realpath(__file__))
 api = twitter_authentification(cur_dir + "/keys.conf")
 
 seconds_by_day = 86400
@@ -93,11 +93,3 @@ while True:		#Fantastic infinite loop
 		api.update_status(message)
 		
 		sleep(time_gap)
-		
-		
-		
-		
-
-
-	
-
