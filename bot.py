@@ -59,6 +59,13 @@ seconds_by_day = 86400
 tweets_content = file_to_probability_dict("words.conf")
 monday = 0
 
+followers = set(tweepy.Cursor(api.followers).items())
+nb_followers = len(followers)
+messaged_followers = set()
+followers_by_day = ceil(nb_followers / 7.0)
+
+
+
 while True:		#Fantastic infinite loop
 	if localtime()[6] == monday:	#Actualize followers list (on monday)
 		followers = set(tweepy.Cursor(api.followers).items())
