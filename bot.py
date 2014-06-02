@@ -1,6 +1,8 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import tweepy
+import os
 from random import randrange
 from time import localtime
 from time import sleep
@@ -53,10 +55,11 @@ def rand_from_list(list_of_things):
 	return list_of_things[randrange(len(list_of_things))]
 
 
-api = twitter_authentification("keys.conf")
+cur_dir = os.getcwd()
+api = twitter_authentification(cur_dir + "/keys.conf")
 
 seconds_by_day = 86400
-tweets_content = file_to_probability_dict("words.conf")
+tweets_content = file_to_probability_dict(cur_dir + "/words.conf")
 monday = 0
 
 followers = set(tweepy.Cursor(api.followers).items())
