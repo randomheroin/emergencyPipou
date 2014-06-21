@@ -95,10 +95,13 @@ if __name__ == "__main__":
     retCode = daemonize()
     while 1:
         if localtime()[6] == monday:	#Actualize followers list (on monday)
-    	    followers = set(tweepy.Cursor(api.followers).items())
-        	nb_followers = len(followers)
-	        messaged_followers = set()
-        	followers_by_day = ceil(nb_followers / 7.0)
+            try:
+                followers = set(tweepy.Cursor(api.followers).items())
+            except tweepy.error.TweepError:
+                pass
+            nb_followers = len(followers)
+            messaged_followers = set()
+            followers_by_day = ceil(nb_followers / 7.0)
 		
         today = localtime()[6]
 	
@@ -114,8 +117,10 @@ if __name__ == "__main__":
             handle = "@" + selected_user.screen_name
             word = randomized_word(tweets_content)
             message = handle + " " + word
-
-            api.update_status(message)
+            try:
+                api.update_status(message)
+            except tweepy.error.TweepError:
+                pass
 		
             sleep(time_gap)
 
