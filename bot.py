@@ -93,28 +93,29 @@ followers_by_day = ceil(nb_followers / 7.0)
 
 if __name__ == "__main__":
     retCode = daemonize()
-    if localtime()[6] == monday:	#Actualize followers list (on monday)
-	followers = set(tweepy.Cursor(api.followers).items())
-	nb_followers = len(followers)
-	messaged_followers = set()
-	followers_by_day = ceil(nb_followers / 7.0)
+    while 1:
+        if localtime()[6] == monday:	#Actualize followers list (on monday)
+    	    followers = set(tweepy.Cursor(api.followers).items())
+        	nb_followers = len(followers)
+	        messaged_followers = set()
+        	followers_by_day = ceil(nb_followers / 7.0)
 		
-    today = localtime()[6]
+        today = localtime()[6]
 	
-    while localtime()[6] == today:
-        time_gap = seconds_by_day / followers_by_day		
-        to_be_messaged = list(followers - messaged_followers)
+        while localtime()[6] == today:
+            time_gap = seconds_by_day / followers_by_day		
+            to_be_messaged = list(followers - messaged_followers)
 
-        #Pick a user to message
-        selected_user = rand_from_list(to_be_messaged)
-        messaged_followers.add(selected_user)
+            #Pick a user to message
+            selected_user = rand_from_list(to_be_messaged)
+            messaged_followers.add(selected_user)
+    
+            #Putting together the "message"
+            handle = "@" + selected_user.screen_name
+            word = randomized_word(tweets_content)
+            message = handle + " " + word
 
-        #Putting together the "message"
-        handle = "@" + selected_user.screen_name
-        word = randomized_word(tweets_content)
-        message = handle + " " + word
-
-        api.update_status(message)
+            api.update_status(message)
 		
-        sleep(time_gap)
+            sleep(time_gap)
 
