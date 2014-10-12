@@ -104,6 +104,7 @@ if __name__ == "__main__":
             followers_by_day = ceil(nb_followers / 7.0)
 		
         today = localtime()[6]
+	tweets_content = file_to_probability_dict(cur_dir + "/words.conf")
 	
         while localtime()[6] == today:
             time_gap = seconds_by_day / followers_by_day		
@@ -123,4 +124,3 @@ if __name__ == "__main__":
                 pass
 		
             sleep(time_gap)
-
