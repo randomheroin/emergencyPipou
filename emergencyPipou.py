@@ -51,11 +51,14 @@ def file_to_probability_dict(file_name):
 	for i in f.readlines():
 		i = i[:len(i) - 1]		#Removing the \n char
 		j = i.split('\t')
-		num = int(j[0])
-		word = unicode(str(j[1]), 'utf-8')
-		for j in range(int(num)):
-			d_words[n] = word
-			n += 1
+		try:
+			num = int(j[0])
+			word = unicode(str(j[1]), 'utf-8')
+			for j in range(int(num)):
+				d_words[n] = word
+				n += 1
+		except ValueError:
+			pass
 			
 	return d_words
 	
@@ -85,14 +88,15 @@ api = twitter_authentification(cur_dir + "/keys.conf")
 seconds_by_day = 86400
 tweets_content = file_to_probability_dict(cur_dir + "/words.conf")
 monday = 0
-
-followers = set(tweepy.Cursor(api.followers).items())
+api.update_status("tes")
+print followers
+followers = set(tweepy.Cursor(api.followers()).items())
 nb_followers = len(followers)
 messaged_followers = set()
 followers_by_day = ceil(nb_followers / 7.0)
 
 if __name__ == "__main__":
-    retCode = daemonize()
+    #retCode = daemonize()
     while 1:
         if localtime()[6] == monday:	#Actualize followers list (on monday)
             try:
