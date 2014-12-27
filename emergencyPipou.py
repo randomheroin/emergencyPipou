@@ -124,26 +124,24 @@ def fonctionnement_principal():
             except tweepy.error.TweepError:
                 pass
             
-            last_mention_id = repondre(mentions, api, last_mention_id, tweets_content)
+            last_mention_id = repondre(mentions, api, tweets_content, last_mention_id)
             sleep(time_gap)
-
 
 def is_stand_alone(tweet):
     if(tweet.in_reply_to_status_id):
         return False
     return True
 
-
 def repondre(mentions, api, tweets_content, last_mention_id=None):
     try:
-        last_mention_id = mentions[0].id
+        last_mention_id = mentions[0]
     except IndexError:
         pass
-
-    if(last_mention_id == None):
-        mentions = api.mentions_timeline()
-    else:
+    
+    if(last_mention_id):
         mentions = api.mentions_timeline(last_mention_id)
+    else:
+        mentions = api.mentions_timeline()
 
     for tweet in mentions:
         if is_stand_alone(tweet):
