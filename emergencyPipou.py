@@ -44,23 +44,6 @@ def file_to_dict(file_name):
     return d_keys
 
 def file_to_probability_dict(file_name):
-<<<<<<< HEAD
-    """opens a file and put tab separated values in a probability dict"""
-    f = open(file_name, 'r')
-    d_words = {}
-    n = 0
-    for i in f.readlines():
-        i = i[:len(i) - 1]        #Removing the \n char
-        j = i.split('\t')
-        num = int(j[0])
-        word = unicode(str(j[1]), 'utf-8')
-        for j in range(int(num)):
-            d_words[n] = word
-            n += 1
-            
-    return d_words
-    
-=======
 	"""opens a file and put tab separated values in a probability dict"""
 	f = open(file_name, 'r')
 	d_words = {}
@@ -79,7 +62,7 @@ def file_to_probability_dict(file_name):
 			
 	return d_words
 	
->>>>>>> b6753265d783cd34e1972ecafbb60fdac1289228
+
 def randomized_word(d_words):
     """Selects a random word from a probability dict"""
     p = randrange(len(d_words))
@@ -95,33 +78,8 @@ def twitter_authentification(keys_file):
     api = tweepy.API(auth)
     return api
 
-def rand_from_list(list_of_things):
-<<<<<<< HEAD
-    """Returns one random item from a set"""
-    return list_of_things[randrange(len(list_of_things))]
-
 def fonctionnement_principal():
-=======
-	"""Returns one random item from a set"""
-	return list_of_things[randrange(len(list_of_things))]
 
-
-cur_dir = os.path.dirname(os.path.realpath(__file__))
-api = twitter_authentification(cur_dir + "/keys.conf")
-
-seconds_by_day = 86400
-tweets_content = file_to_probability_dict(cur_dir + "/words.conf")
-monday = 0
-api.update_status("tes")
-print followers
-followers = set(tweepy.Cursor(api.followers()).items())
-nb_followers = len(followers)
-messaged_followers = set()
-followers_by_day = ceil(nb_followers / 7.0)
-
-if __name__ == "__main__":
-    #retCode = daemonize()
->>>>>>> b6753265d783cd34e1972ecafbb60fdac1289228
     while 1:
         if localtime()[6] == monday:    #Actualize followers list (on monday)
             try:
@@ -158,7 +116,7 @@ if __name__ == "__main__":
 
 def repondre(mentions):
     try:
-        global last_mention_id = mentions[0]
+        last_mention_id = mentions[0]
     except IndexError:
         pass
 
@@ -175,7 +133,6 @@ def repondre(mentions):
     return last_mention_id
 
 
-
 if __name__ == "__main__":
 
     cur_dir = os.path.dirname(os.path.realpath(__file__))
@@ -184,8 +141,8 @@ if __name__ == "__main__":
     seconds_by_day = 86400
     tweets_content = file_to_probability_dict(cur_dir + "/words.conf")
     monday = 0
-
-    followers = set(tweepy.Cursor(api.followers).items())
+    
+    followers = set(tweepy.Cursor(api.followers()).items())
     nb_followers = len(followers)
     messaged_followers = set()
     followers_by_day = ceil(nb_followers / 7.0)
@@ -193,5 +150,4 @@ if __name__ == "__main__":
     last_mention_id = None
     mentions = []
 
-    retCode = daemonize()
     fonctionnement_principal()
