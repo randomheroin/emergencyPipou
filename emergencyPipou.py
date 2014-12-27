@@ -134,7 +134,7 @@ def is_stand_alone(tweet):
     return True
 
 
-def repondre(mentions, api, last_mention_id=None, tweets_content):
+def repondre(mentions, api, tweets_content, last_mention_id=None):
     try:
         last_mention_id = mentions[0]
     except IndexError:
