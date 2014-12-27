@@ -124,7 +124,7 @@ def fonctionnement_principal():
             except tweepy.error.TweepError:
                 pass
             
-            last_mention_id = repondre(mentions)
+            last_mention_id = repondre(mentions, api)
             sleep(time_gap)
 
 
@@ -134,7 +134,7 @@ def is_stand_alone(tweet):
     return True
 
 
-def repondre(mentions):
+def repondre(mentions, api):
     try:
         last_mention_id = mentions[0]
     except IndexError:
