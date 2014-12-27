@@ -114,6 +114,12 @@ def fonctionnement_principal():
             sleep(time_gap)
 
 
+def is_stand_alone(tweet):
+    if(tweet.in_reply_to_status_id):
+        return False
+    return True
+
+
 def repondre(mentions):
     try:
         last_mention_id = mentions[0]
@@ -123,12 +129,12 @@ def repondre(mentions):
     mentions = api.mentions_timeline(last_mention_id)
 
     for tweet in mentions:
+        if is_stand_alone(tweet):
+            handle = "@" + tweet.user.screen_name
+            word = randomized_word(tweets_content)
+            message = handle + " " + word
 
-        handle = "@" + tweet.user.screen_name
-        word = randomized_word(tweets_content)
-        message = handle + " " + word
-
-        api.update_status(message, tweet.id)
+            api.update_status(message, tweet.id)
 
     return last_mention_id
 
