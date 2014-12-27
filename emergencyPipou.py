@@ -79,7 +79,20 @@ def twitter_authentification(keys_file):
     return api
 
 def fonctionnement_principal():
+    cur_dir = os.path.dirname(os.path.realpath(__file__))
+    api = twitter_authentification(cur_dir + "/keys.conf")
 
+    seconds_by_day = 86400
+    tweets_content = file_to_probability_dict(cur_dir + "/words.conf")
+    monday = 0
+    
+    followers = set(tweepy.Cursor(api.followers()).items())
+    nb_followers = len(followers)
+    messaged_followers = set()
+    followers_by_day = ceil(nb_followers / 7.0)
+
+    last_mention_id = None
+    mentions = []
     while 1:
         if localtime()[6] == monday:    #Actualize followers list (on monday)
             try:
@@ -140,20 +153,5 @@ def repondre(mentions):
 
 
 if __name__ == "__main__":
-
-    cur_dir = os.path.dirname(os.path.realpath(__file__))
-    api = twitter_authentification(cur_dir + "/keys.conf")
-
-    seconds_by_day = 86400
-    tweets_content = file_to_probability_dict(cur_dir + "/words.conf")
-    monday = 0
-    
-    followers = set(tweepy.Cursor(api.followers()).items())
-    nb_followers = len(followers)
-    messaged_followers = set()
-    followers_by_day = ceil(nb_followers / 7.0)
-
-    last_mention_id = None
-    mentions = []
 
     fonctionnement_principal()
