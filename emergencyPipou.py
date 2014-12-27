@@ -140,7 +140,10 @@ def repondre(mentions, api, tweets_content, last_mention_id=None):
     except IndexError:
         pass
 
-    mentions = api.mentions_timeline(last_mention_id)
+    if(last_mention_id == None):
+        mentions = api.mentions_timeline()
+    else:
+        mentions = api.mentions_timeline(last_mention_id)
 
     for tweet in mentions:
         if is_stand_alone(tweet):
