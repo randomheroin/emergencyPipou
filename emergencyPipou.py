@@ -4,6 +4,7 @@
 import tweepy
 import os
 from random import randrange
+from random import choice
 from time import localtime
 from time import sleep
 from math import ceil
@@ -86,7 +87,7 @@ def fonctionnement_principal():
     tweets_content = file_to_probability_dict(cur_dir + "/words.conf")
     monday = 0
     
-    followers = set(tweepy.Cursor(api.followers()).items())
+    followers = set(api.followers())
     nb_followers = len(followers)
     messaged_followers = set()
     followers_by_day = ceil(nb_followers / 7.0)
@@ -96,7 +97,7 @@ def fonctionnement_principal():
     while 1:
         if localtime()[6] == monday:    #Actualize followers list (on monday)
             try:
-                followers = set(tweepy.Cursor(api.followers).items())
+                followers = set((api.followers))
             except tweepy.error.TweepError:
                 pass
             nb_followers = len(followers)
@@ -111,7 +112,7 @@ def fonctionnement_principal():
             to_be_messaged = list(followers - messaged_followers)
 
             #Pick a user to message
-            selected_user = rand_from_list(to_be_messaged)
+            selected_user = choice(to_be_messaged)
             messaged_followers.add(selected_user)
     
             #Putting together the "message"
