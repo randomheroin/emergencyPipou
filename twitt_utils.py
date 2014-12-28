@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#Version 1
+
 import tweepy
 import os
 import re
