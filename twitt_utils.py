@@ -26,6 +26,7 @@ def file_to_list(file_name):
     with open(file_name, 'r') as f:
         for i in f.readlines():
             i = i[:len(i) - 1]
+            i = unicode(i, "utf-8")
             liste.append(i)
     return liste
 
